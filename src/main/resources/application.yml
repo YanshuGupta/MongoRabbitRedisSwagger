@@ -1,0 +1,13 @@
+#
+  
+spring:
+  data:
+    mongodb:
+      database: mydb
+      uri: mongodb://yanshu:root@localhost:27017/mydb#    redis:#      repositories:#        enabled: false
+  rabbitmq:
+    listener:
+      simple:
+        default-requeue-rejected: false
+#  cache:#    redis:#      time-to-live: 6000
+      
