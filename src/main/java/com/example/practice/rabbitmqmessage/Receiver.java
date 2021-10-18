@@ -3,6 +3,8 @@ package com.example.practice.rabbitmqmessage;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.practice.dao.MessageRepository;
+import com.example.practice.exception.CustomException;
 import com.example.practice.util.WebUtils;
 
 @Service
@@ -22,10 +25,10 @@ public class Receiver {
 	private RabbitTemplate rabbitTemplate;
 
 	public static final String PRIMARY_QUEUE = "primaryWorkerQueue";
-	private static final String WAIT_QUEUE = PRIMARY_QUEUE + ".wait";
 
 	public static final String PARKINGLOT_QUEUE = PRIMARY_QUEUE + ".parkingLot";
 
+	private final Logger logger = LoggerFactory.getLogger(Receiver.class);
 	@RabbitListener(queues = PRIMARY_QUEUE)
 	public void primary(Message in) throws Exception {
 		if (!processMessage(in.getBody())) {
@@ -33,16 +36,13 @@ public class Receiver {
 				putIntoParkingLot(in);
 				return;
 			}
-			/*
-			 * Change This to Custom Exception with logger
-			 */
-			throw new RuntimeException("There was an error");
+			throw new CustomException("There was an error");
 		}
 	}
 
 	private boolean processMessage(byte[] body) {
 		String msg = new String(body);
-		System.out.println("Received msg: " + msg);
+		logger.info("Received msg: " + msg);
 		if (msg != null && !msg.trim().isEmpty()) {
 			com.example.practice.model.Message messageObj = new com.example.practice.model.Message(
 					WebUtils.getRandomString(), msg);
@@ -63,7 +63,7 @@ public class Receiver {
 	}
 
 	private void putIntoParkingLot(Message failedMessage) {
-		System.out.println("Retries exeeded putting into parking lot");
+		logger.error("Retries exeeded putting into parking lot");
 		this.rabbitTemplate.send(PARKINGLOT_QUEUE, failedMessage);
 	}
 }
