@@ -1,9 +1,7 @@
 package com.example.practice.rabbitmqmessage;
 
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -19,7 +17,7 @@ public class Receiver {
 
 	@Autowired
 	MessageRepository messageRepo;
-	
+
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 
@@ -28,9 +26,9 @@ public class Receiver {
 
 	public static final String PARKINGLOT_QUEUE = PRIMARY_QUEUE + ".parkingLot";
 
-	@RabbitListener(queues = PRIMARY_QUEUE )
+	@RabbitListener(queues = PRIMARY_QUEUE)
 	public void primary(Message in) throws Exception {
-		if(!processMessage(in.getBody())) {
+		if (!processMessage(in.getBody())) {
 			if (hasExceededRetryCount(in)) {
 				putIntoParkingLot(in);
 				return;
@@ -44,9 +42,10 @@ public class Receiver {
 
 	private boolean processMessage(byte[] body) {
 		String msg = new String(body);
-		System.out.println("Received msg: "+msg);
-		if(msg != null && !msg.trim().isEmpty()) {
-			com.example.practice.model.Message messageObj = new com.example.practice.model.Message(WebUtils.getRandomString(), msg);
+		System.out.println("Received msg: " + msg);
+		if (msg != null && !msg.trim().isEmpty()) {
+			com.example.practice.model.Message messageObj = new com.example.practice.model.Message(
+					WebUtils.getRandomString(), msg);
 			messageRepo.save(messageObj);
 			return true;
 		}

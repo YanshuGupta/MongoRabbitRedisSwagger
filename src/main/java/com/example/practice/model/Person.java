@@ -5,10 +5,8 @@ import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 
 public class Person implements Serializable {
-	public static int count=1237;
 	private String name;
 	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
 	public Person(String name, int id) {
