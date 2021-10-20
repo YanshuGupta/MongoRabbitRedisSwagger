@@ -1,13 +1,26 @@
 #
   
 spring:
+# MongoDB Configuration
   data:
     mongodb:
       database: mydb
-      uri: mongodb://yanshu:root@localhost:27017/mydb  rabbitmq:
+      uri: mongodb://yanshu:root@localhost:27017/mydb
+# RabbitMQ Configuration  rabbitmq:
     listener:
       simple:
         default-requeue-rejected: false
   cache:
-    cache-names: persons    redis:      time-to-live: 600000
-      
+    cache-names: persons, chache2,    redis:      time-to-live: 600000
+# Spring Cloud Config Client Configuration
+  profiles:
+    active:
+    - default
+  config:    import:    - optional:configserver:http://localhost:8888/
+# Eureka Client Configuration
+  application:    name: practice
+# Continue. Default url is 8761, if you want to change 
+eureka:
+  client:
+    enabled: true    service-url:      defaultZone: user:password@http://localhost:8761/eureka/
+    healthcheck:      enabled: true

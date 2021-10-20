@@ -26,6 +26,7 @@ public class PersonService {
 	
 	@Cacheable(cacheNames = "persons", key="#id")
 	public Person findById(int id) throws CustomException {
+		System.out.println("find by id called");
 		Optional<Person> obj = personRepo.findById(id);
 		if(obj.isPresent()) {
 			return obj.get();
