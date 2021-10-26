@@ -4,6 +4,8 @@
 # Swagger Integration
 # Spring Cloud Config Client
 # Spring Cloud Eureka as Client
+# FeignClient
+# GraphQL
 
 
 You will need other application setup first to run this application.
