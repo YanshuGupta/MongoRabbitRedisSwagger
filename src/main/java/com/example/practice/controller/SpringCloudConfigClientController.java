@@ -12,7 +12,7 @@ public class SpringCloudConfigClientController {
 	 * By default main branch is used if not defined in Config server
 	 * Active Profile is used from this application to fetch property value.
 	 */
-	@Value("${info.url}")
+	@Value("${rate}")
 	String message;
 	
 	@GetMapping("/cloudConfigValue")

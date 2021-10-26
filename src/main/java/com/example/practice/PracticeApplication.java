@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
@@ -19,6 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableCaching
 @EnableSwagger2
 @EnableEurekaClient
+@EnableFeignClients
 public class PracticeApplication implements CommandLineRunner {
 	
 	public static void main(String[] args) {
@@ -29,7 +31,7 @@ public class PracticeApplication implements CommandLineRunner {
     public Docket api() { 
         return new Docket(DocumentationType.SWAGGER_2)  
           .select()                                  
-          .apis(RequestHandlerSelectors.basePackage("com.example.practice"))              
+          .apis(RequestHandlerSelectors.any())              
           .paths(PathSelectors.any())                          
           .build();                                           
     }
